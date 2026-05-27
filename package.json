@@ -1,0 +1,14 @@
+{
+  "name": "meta-bulk-sponsor-tool",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Internal webtool to create Meta ads from published Facebook and Instagram posts.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "check": "node --check server.js && node --check app.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

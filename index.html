@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bulk Sponsor Post</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="guided-shell">
+      <header class="app-header">
+        <div>
+          <p class="eyebrow">Bulk sponsor</p>
+          <h1>Crea inserzioni da post gia pubblicati</h1>
+        </div>
+        <div class="header-actions">
+          <button class="secondary-button" id="exportBtn" type="button">Esporta</button>
+          <button class="primary-button" id="createAdsBtn" type="button">Crea inserzioni in pausa</button>
+        </div>
+      </header>
+
+      <section class="status-strip" aria-label="Riepilogo">
+        <div>
+          <span>Account</span>
+          <strong id="summaryAccount">Non selezionato</strong>
+        </div>
+        <div>
+          <span>Campagna</span>
+          <strong id="summaryCampaign">Non selezionata</strong>
+        </div>
+        <div>
+          <span>Gruppo inserzioni</span>
+          <strong id="summaryAdset">Non selezionato</strong>
+        </div>
+        <div>
+          <span>Post in coda</span>
+          <strong id="metricQueued">0</strong>
+        </div>
+      </section>
+
+      <section class="step-card">
+        <div class="step-heading">
+          <div class="step-number">1</div>
+          <div>
+            <h2>Scegli dove creare le inserzioni</h2>
+            <p>Filtra le liste, controlla il riepilogo e poi passa ai post.</p>
+          </div>
+          <button class="ghost-button" id="refreshTargetBtn" type="button">Ricarica</button>
+        </div>
+
+        <div class="path-helper" aria-label="Percorso selezione">
+          <div class="path-step" id="pathAccount">
+            <span>Account</span>
+            <strong>Da scegliere</strong>
+          </div>
+          <div class="path-step" id="pathCampaign">
+            <span>Campagna</span>
+            <strong>Da scegliere</strong>
+          </div>
+          <div class="path-step" id="pathAdset">
+            <span>Gruppo</span>
+            <strong>Da scegliere</strong>
+          </div>
+          <div class="path-step" id="pathRule">
+            <span>Regola</span>
+            <strong>Facoltativa</strong>
+          </div>
+        </div>
+
+        <div class="target-grid">
+          <label>
+            Cerca account
+            <input id="accountSearch" type="search" placeholder="Nome account..." autocomplete="off">
+          </label>
+          <label>
+            Cerca campagna
+            <input id="campaignSearch" type="search" placeholder="Nome campagna..." autocomplete="off">
+          </label>
+          <label>
+            Cerca gruppo
+            <input id="adsetSearch" type="search" placeholder="Nome gruppo..." autocomplete="off">
+          </label>
+          <label>
+            Cerca regola
+            <input id="ruleSearch" type="search" placeholder="Nome regola..." autocomplete="off">
+          </label>
+          <label>
+            Account pubblicitario
+            <select id="adAccountSelect"></select>
+          </label>
+          <label>
+            Campagna
+            <select id="campaignSelect"></select>
+          </label>
+          <label>
+            Gruppo inserzioni
+            <select id="adsetSelect"></select>
+          </label>
+          <label>
+            Regola esistente
+            <select id="ruleSelect"></select>
+          </label>
+          <label class="wide-field">
+            Schema nome inserzione
+            <input id="adNamePattern" type="text" value="ADV - {platform} - {post}" autocomplete="off">
+          </label>
+        </div>
+
+        <div class="destination-panel" id="destinationPanel"></div>
+      </section>
+
+      <section class="step-card">
+        <div class="step-heading">
+          <div class="step-number">2</div>
+          <div>
+            <h2>Scegli i post da sponsorizzare</h2>
+            <p>Passa tra Facebook e Instagram, scegli la fonte e aggiungi i post alla coda.</p>
+          </div>
+        </div>
+
+        <div class="post-controls">
+          <div class="tabs" role="tablist" aria-label="Piattaforma post">
+            <button class="active" type="button" data-platform-tab="Facebook">Facebook</button>
+            <button type="button" data-platform-tab="Instagram">Instagram</button>
+          </div>
+          <label>
+            Fonte post
+            <select id="sourceSelect"></select>
+          </label>
+          <div class="source-note" id="sourceNote"></div>
+          <label class="search-field">
+            Cerca
+            <input id="searchInput" type="search" placeholder="Testo, ID o link..." autocomplete="off">
+          </label>
+          <button class="secondary-button" id="selectVisibleBtn" type="button">Seleziona visibili</button>
+          <button class="primary-button" id="queueSelectedBtn" type="button">Aggiungi selezionati alla coda</button>
+        </div>
+
+        <div class="mini-stats">
+          <span><strong id="metricAvailable">0</strong> disponibili</span>
+          <span><strong id="metricSelected">0</strong> selezionati</span>
+        </div>
+
+        <div class="post-library" id="postLibrary"></div>
+      </section>
+
+      <section class="step-card">
+        <div class="step-heading">
+          <div class="step-number">3</div>
+          <div>
+            <h2>Controlla la coda e crea</h2>
+            <p>Puoi rinominare ogni inserzione prima di crearla e decidere se pubblicarla subito.</p>
+          </div>
+          <button class="ghost-button" id="clearQueueBtn" type="button">Svuota coda</button>
+        </div>
+
+        <div class="queue-list" id="queueList"></div>
+
+        <div class="final-actions">
+          <button class="secondary-button" id="renameQueueBtn" type="button">Aggiorna nomi in coda</button>
+          <label class="toggle-row">
+            <input id="activeStatusCheckbox" type="checkbox">
+            <span>Crea inserzione attiva</span>
+          </label>
+          <button class="primary-button" id="createAdsBtnBottom" type="button">Crea inserzioni in pausa</button>
+        </div>
+      </section>
+
+      <section class="step-card result-card" id="resultCard" hidden>
+        <div class="step-heading">
+          <div class="step-number">4</div>
+          <div>
+            <h2>Risultato creazione</h2>
+            <p>Qui vedi cosa e stato creato su Meta e cosa richiede attenzione.</p>
+          </div>
+        </div>
+        <div class="result-list" id="resultList"></div>
+      </section>
+    </main>
+
+    <dialog id="exportDialog">
+      <form method="dialog">
+        <div class="dialog-header">
+          <h2>Dati batch</h2>
+          <button class="icon-button" value="close" type="submit" aria-label="Chiudi">x</button>
+        </div>
+        <textarea id="exportOutput" rows="18" readonly></textarea>
+        <div class="dialog-actions">
+          <button class="secondary-button" id="copyExportBtn" type="button">Copia dati</button>
+          <button class="primary-button" value="close" type="submit">Fine</button>
+        </div>
+      </form>
+    </dialog>
+
+    <script src="app.js"></script>
+  </body>
+</html>
